@@ -119,7 +119,7 @@ int FTDIpp_MPSSE::close_device()
 	 if (_ftdi->usb_dev != NULL) {
 		rtn = libusb_release_interface(_ftdi->usb_dev, _ftdi->interface);
 		if (rtn < 0) {
-			fprintf(stderr, "release interface failed %d\n", rtn);
+			fprintf(stderr, "release interface failed %d (%s)\n", rtn, libusb_error_name(rtn));
 			return EXIT_FAILURE;
 		}
 #ifdef ATTACH_KERNEL
@@ -127,7 +127,7 @@ int FTDIpp_MPSSE::close_device()
 		if (_ftdi->module_detach_mode == AUTO_DETACH_SIO_MODULE) {
 			rtn = libusb_attach_kernel_driver(_ftdi->usb_dev, _ftdi->interface);
 			if( rtn != 0)
-				fprintf(stderr, "detach error %d\n", rtn);
+				fprintf(stderr, "detach error %d (%s)\n", rtn, libusb_error_name(rtn));
 		}
 #endif
 	}
